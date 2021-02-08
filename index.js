@@ -19,6 +19,8 @@ const _ = require('lodash')
 const helper = require('./util/helper')
 const { URL } = require('./util/config')
 
+const playersList = []
+
 let gamesList = []
 
 app.use(cors())
@@ -32,7 +34,7 @@ app.get(`/api/games/:gameID`, (req, res) => {
   const { gameID } = req.params
   // verify if the Game id is in the gamesList array
   const gameInList = helper.findGame(gamesList, gameID)
-  if (gameInList.exists) {
+  if (gameInList) {
     res.status(200).json(gameInList)
   } else {
     res.status(404).json({ error: 'The game you requested does not exist.' })
@@ -40,35 +42,21 @@ app.get(`/api/games/:gameID`, (req, res) => {
 })
 
 io.on('connection', (socket) => {
-  socket.on('login_player/request', (payload) => {
-    // When a user logs in, broadcast it to the others
-    console.log(
-      `A new user logged in with username : ${payload.player.username}`
-    )
-    // Broadcast a new login to the users
-    io.emit('login_player/status', { status: true, player: payload })
-  })
-
   socket.on('join_game/request', (payload) => {
     const gameInList = helper.findGame(gamesList, payload.gameID)
-    console.log(
-      `JOIN GAME : The user ${payload.player.username} wants to join the game ${gameInList.game.gameID}`
-    )
-    io.emit('join_game/status', {
-      status: gameInList.exists,
-      game: gameInList.game,
-    })
-    if (gameInList.exists) {
+    if (gameInList) {
       console.log(
-        `JOIN GAME : The player ${payload.player.username} has joined the game ${gameInList.game.gameID}`
+        `JOIN GAME : The player ${payload.player.username} has joined the game ${gameInList.gameID}`
       )
-
-      gameInList.game.players.push(payload.player)
-      gamesList = helper.updateGame(gamesList, gameInList.game)
-      const roomName = `room/${gameInList.game.gameID}`
+      gameInList.players.push(payload.player)
+      gamesList = helper.updateGame(gamesList, gameInList)
+      const roomName = `room/${gameInList.gameID}`
       socket.join(roomName)
       socket.to(roomName).emit('player_joined', { player: payload.player })
     }
+    io.emit('join_game/status', {
+      game: gameInList,
+    })
   })
 
   socket.on('create_game/request', (payload) => {
@@ -79,6 +67,7 @@ io.on('connection', (socket) => {
       ownerID: payload.player.id,
       players: [payload.player],
     }
+    console.log('newGame :>> ', newGame)
     gamesList.push(newGame)
     const roomName = `room/${newGame.gameID}`
     socket.join(roomName)
@@ -90,11 +79,9 @@ io.on('connection', (socket) => {
 
   socket.on('color_selected', (payload) => {
     const roomName = `room/${payload.game.gameID}`
-    // TODO finish to emit color change event
-    console.log('payload :>> ', payload)
+    gamesList = helper.updateGame(gamesList, payload.game)
     socket.to(roomName).emit('color_selected', {
-      color: payload.color,
-      playerID: payload.playerID,
+      player: { ...payload.player, color: payload.color },
     })
   })
 })

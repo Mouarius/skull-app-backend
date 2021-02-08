@@ -9,12 +9,12 @@ const _ = require('lodash')
 
 const findGame = (gamesList, gameID) => {
   const gameFound = _.find(gamesList, _.matchesProperty('gameID', gameID))
-  const result = { exists: false, game: null }
-  if (gameFound) {
-    result.exists = true
-    result.game = gameFound
-  }
-  return result
+  // const result = { exists: false, game: null }
+  // if (gameFound) {
+  //   result.exists = true
+  //   result.game = gameFound
+  // }
+  return gameFound
 }
 
 /**
