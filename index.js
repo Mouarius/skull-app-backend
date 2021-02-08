@@ -76,13 +76,13 @@ io.on('connection', (socket) => {
     )
     socket.emit('create_game/status', { status: true, game: newGame })
   })
-
-  socket.on('color_selected', (payload) => {
+  socket.on('update_game', (payload) => {
+    console.log('payload :>> ', payload.game.players)
     const roomName = `room/${payload.game.gameID}`
+    const gameToUpdate = helper.findGame(gamesList, payload.game.gameID)
+
     gamesList = helper.updateGame(gamesList, payload.game)
-    socket.to(roomName).emit('color_selected', {
-      player: { ...payload.player, color: payload.color },
-    })
+    socket.to(roomName).emit('game_updated', { game: payload.game })
   })
 })
 
