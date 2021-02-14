@@ -1,18 +1,18 @@
 import express from 'express';
+import gamesServices from '../services/gamesServices';
 
 const gamesRouter = express.Router();
-import helper from '../util/helper';
-import { games } from '../../data/data';
 
 gamesRouter.get('/', (_req, res) => {
+  const games = gamesServices.getGames();
+  console.log('🚀 ~ file: games.ts ~ line 8 ~ gamesRouter.get ~ games', games);
+
   res.status(200).json(games);
 });
 
 gamesRouter.get(`/:gameID`, (req, res) => {
-  // Must check when a user accesses a game with the url, that the game exists in DB
   const { gameID } = req.params;
-  // verify if the Game id is in the gamesList array
-  const gameInList = helper.findGame(games, gameID);
+  const gameInList = gamesServices.findGame(gameID);
   if (gameInList) {
     res.status(200).json(gameInList);
   } else {

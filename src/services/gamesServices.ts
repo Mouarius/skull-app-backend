@@ -5,6 +5,10 @@ import _ from 'lodash';
 
 const gamesList: Game[] = games;
 
+const getGames = (): Game[] => {
+  return gamesList;
+};
+
 /**
  * Checks if the gameID provided exists in the DB
  * @param {string} gamesList the array of the actual state of the games database
@@ -30,9 +34,10 @@ const updateGame = (gameToUpdate: Game): Game[] => {
 };
 
 const addGame = (owner: Player): Game => {
+  console.log('🚀 ~ file: gamesServices.ts ~ line 37 ~ addGame ~ owner', owner);
   const newGame = new Game(owner);
   gamesList.push(newGame);
   return newGame;
 };
 
-export default { findGame, updateGame, addGame };
+export default { getGames, findGame, updateGame, addGame };
