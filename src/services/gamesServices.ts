@@ -1,0 +1,38 @@
+import { games } from '../../data/data';
+import Game from '../model/Game';
+import { Player } from '../util/types';
+import _ from 'lodash';
+
+const gamesList: Game[] = games;
+
+/**
+ * Checks if the gameID provided exists in the DB
+ * @param {string} gamesList the array of the actual state of the games database
+ * @param {string} gameID he gameID to find
+ */
+
+const findGame = (gameID: string): Game | undefined => {
+  const gameFound = _.find(gamesList, _.matchesProperty('gameID', gameID));
+  return gameFound;
+};
+
+/**
+ * Returns an updated version of the gamesList given in parameters
+ * @param {Array} gamesList the array of the actual state of the games database
+ * @param {Game} gameToUpdate the game object to update
+ */
+
+const updateGame = (gameToUpdate: Game): Game[] => {
+  gamesList.map((game) =>
+    game.gameID === gameToUpdate.gameID ? gameToUpdate : game
+  );
+  return gamesList;
+};
+
+const addGame = (owner: Player): Game => {
+  const newGame = new Game(owner);
+  gamesList.push(newGame);
+  return newGame;
+};
+
+export default { findGame, updateGame, addGame };
