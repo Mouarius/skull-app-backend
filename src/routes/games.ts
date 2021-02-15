@@ -5,7 +5,6 @@ const gamesRouter = express.Router();
 
 gamesRouter.get('/', (_req, res) => {
   const games = gamesServices.getGames();
-  console.log('🚀 ~ file: games.ts ~ line 8 ~ gamesRouter.get ~ games', games);
 
   res.status(200).json(games);
 });

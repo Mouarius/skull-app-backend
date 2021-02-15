@@ -2,8 +2,13 @@ import { Socket, Server } from 'socket.io';
 import gamesServices from '../services/gamesServices';
 import { Player } from '../util/types';
 
+interface JoinGamePayload {
+  player: Player;
+  gameID: string;
+}
+
 export default (io: Server, socket: Socket): void => {
-  socket.on('join_game/request', (gameID: string, player: Player) => {
+  socket.on('join_game/request', ({ player, gameID }: JoinGamePayload) => {
     const gameInList = gamesServices.findGame(gameID);
     if (gameInList) {
       console.log(
