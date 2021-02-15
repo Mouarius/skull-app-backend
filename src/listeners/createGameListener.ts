@@ -1,12 +1,12 @@
 import { Server, Socket } from 'socket.io';
+import Player from '../model/Player';
 import gamesServices from '../services/gamesServices';
 import logger from '../util/logger';
-import { Player } from '../util/types';
 
 export default (_io: Server, socket: Socket): void => {
   socket.on('create_game/request', (player: Player) => {
     const newGame = gamesServices.addGame(player);
-    const roomName = `room/${newGame.gameID}`;
+    const roomName = newGame.gameID;
     void socket.join(roomName);
 
     logger.createGameLog(newGame);

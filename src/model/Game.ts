@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Player } from '../util/types';
+import { TeamColor } from '../util/types';
+import Player from './Player';
 
 class Game {
   players: Player[];
@@ -9,21 +10,24 @@ class Game {
   ownerID: string;
 
   constructor(player: Player) {
-    console.log(
-      '🚀 ~ file: Game.ts ~ line 12 ~ Game ~ constructor ~ player',
-      player
-    );
     this.players = [player];
     this.gameID = uuidv4();
     this.ownerID = player.id;
   }
 
   addPlayer(player: Player): void {
-    console.log(
-      '🚀 ~ file: Game.ts ~ line 22 ~ Game ~ addPlayer ~ player',
-      player
-    );
     this.players.push(player);
+  }
+  updatePlayer(player: Player): void {
+    this.players = this.players.map((p) => (p.id === player.id ? player : p));
+  }
+
+  isColorTaken(color: TeamColor): Player | null {
+    const playerWithColor = this.players.find((p) => p.color === color);
+    if (playerWithColor) {
+      return playerWithColor;
+    }
+    return null;
   }
 }
 

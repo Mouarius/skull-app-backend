@@ -1,7 +1,7 @@
 import { games } from '../../data/data';
 import Game from '../model/Game';
-import { Player } from '../util/types';
 import _ from 'lodash';
+import Player from '../model/Player';
 
 const gamesList: Game[] = games;
 

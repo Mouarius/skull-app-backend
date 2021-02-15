@@ -1,6 +1,6 @@
 import { Socket, Server } from 'socket.io';
+import Player from '../model/Player';
 import gamesServices from '../services/gamesServices';
-import { Player } from '../util/types';
 
 interface JoinGamePayload {
   player: Player;
@@ -18,7 +18,7 @@ export default (io: Server, socket: Socket): void => {
       gameInList.addPlayer(player);
       gamesServices.updateGame(gameInList);
 
-      const roomName = `room/${gameInList.gameID}`;
+      const roomName = gameInList.gameID;
 
       void socket.join(roomName);
 
