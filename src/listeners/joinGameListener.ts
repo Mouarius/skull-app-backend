@@ -13,6 +13,10 @@ export default (io: Server, socket: Socket): void => {
     ({ player, gameID }: JoinGamePayload) => {
       const gameInList = gamesServices.findGame(gameID);
       if (gameInList) {
+        //** Add the test endpoint */
+        if (gameInList.gameID === 'test') {
+          gameInList.setOwner(player);
+        }
         console.log(
           `JOIN GAME : The player ${player.username} has joined the game ${gameInList.gameID}`
         );

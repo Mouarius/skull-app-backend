@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { TeamColor } from '../util/types';
 import Player from './Player';
 
-class Game {
+export class Game {
   players: Player[];
 
   gameID: string;
@@ -12,6 +12,10 @@ class Game {
   constructor(player: Player) {
     this.players = [player];
     this.gameID = uuidv4();
+    this.ownerID = player.id;
+  }
+
+  setOwner(player: Player): void {
     this.ownerID = player.id;
   }
 

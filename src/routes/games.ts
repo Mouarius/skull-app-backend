@@ -1,4 +1,6 @@
 import express from 'express';
+import { Game } from '../model/Game';
+import { Player } from '../model/Player';
 import gamesServices from '../services/gamesServices';
 
 const gamesRouter = express.Router();
@@ -17,6 +19,12 @@ gamesRouter.get(`/:gameID`, (req, res) => {
   } else {
     res.status(404).json({ error: 'The game you requested does not exist.' });
   }
+});
+gamesRouter.post('/test/tester_ready', (_req, res) => {
+  const testGame = gamesServices.findGame('test') as Game;
+  const testPlayer = testGame.players.find((p) => p.id === 'tester') as Player;
+  testPlayer.toggleReady();
+  res.send(testGame);
 });
 
 export default gamesRouter;

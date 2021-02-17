@@ -2,7 +2,7 @@ import Deck from './Deck';
 import { v4 as uuidv4 } from 'uuid';
 import { TeamColor } from '../util/types';
 
-class Player {
+export class Player {
   color: TeamColor | null;
   username: string;
   deck: Deck | null;
