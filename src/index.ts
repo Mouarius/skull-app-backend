@@ -15,6 +15,7 @@ import joinGameListener from './listeners/joinGameListener';
 import createGameListener from './listeners/createGameListener';
 import updateGameListener from './listeners/updateGameListener';
 import changeColorListener from './listeners/changeColorListener';
+import playerReadyListener from './listeners/playerReadyListener';
 
 // Initialize server
 const app = express();
@@ -36,6 +37,7 @@ io.on('connection', (socket: Socket) => {
   createGameListener(io, socket);
   updateGameListener(io, socket);
   changeColorListener(io, socket);
+  playerReadyListener(io, socket);
 });
 
 httpServer.listen(config.PORT || 3001, () => {

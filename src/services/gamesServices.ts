@@ -34,7 +34,6 @@ const updateGame = (gameToUpdate: Game): Game[] => {
 };
 
 const addGame = (owner: Player): Game => {
-  console.log('🚀 ~ file: gamesServices.ts ~ line 37 ~ addGame ~ owner', owner);
   const newGame = new Game(owner);
   gamesList.push(newGame);
   return newGame;

@@ -9,7 +9,7 @@ export default class Card {
   constructor(color: TeamColor, type: CardType, id: number) {
     this.color = color;
     this.type = type;
-    this.id = color + '_' + type + '_' + id;
+    this.id = `${color}_${type}_${id}`;
   }
 
   play(): void {
