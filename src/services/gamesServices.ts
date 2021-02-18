@@ -1,9 +1,30 @@
-import { games } from '../../data/data';
 import Game from '../model/Game';
 import _ from 'lodash';
 import Player from '../model/Player';
+import { TeamColor } from '../util/types';
 
-const gamesList: Game[] = games;
+const gamesList: Game[] = [];
+console.log(process.env.NODE_ENV);
+
+const createTestGame = (numberTestPlayers: number): Game => {
+  const testGame = new Game();
+  testGame.gameID = 'test';
+
+  for (let i = 0; i < numberTestPlayers; i++) {
+    const testPlayer = new Player();
+    testPlayer.username = `The Tester ${i}`;
+    testPlayer.id = `tester_${i}`;
+    testPlayer.setColor(Object.values(TeamColor)[i]);
+    testPlayer.toggleReady();
+    testGame.addPlayer(testPlayer);
+  }
+  return testGame;
+};
+
+if (process.env.NODE_ENV === 'DEVELOPMENT') {
+  gamesList.concat(createTestGame(4));
+  console.log('🚀 ~ file: gamesServices.ts ~ line 26 ~ gamesList', gamesList);
+}
 
 const getGames = (): Game[] => {
   return gamesList;
@@ -33,10 +54,25 @@ const updateGame = (gameToUpdate: Game): Game[] => {
   return gamesList;
 };
 
+const resetTestGame = (): Game[] => {
+  return gamesList.map((game) =>
+    game.gameID === 'test' ? createTestGame(4) : game
+  );
+};
+
 const addGame = (owner: Player): Game => {
-  const newGame = new Game(owner);
+  const newGame = new Game();
+  newGame.addPlayer(owner);
+  newGame.setOwner(owner);
   gamesList.push(newGame);
   return newGame;
 };
 
-export default { getGames, findGame, updateGame, addGame };
+export default {
+  createTestGame,
+  resetTestGame,
+  getGames,
+  findGame,
+  updateGame,
+  addGame,
+};

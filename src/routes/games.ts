@@ -20,6 +20,10 @@ gamesRouter.get(`/:gameID`, (req, res) => {
     res.status(404).json({ error: 'The game you requested does not exist.' });
   }
 });
+gamesRouter.post('/test/reset', (_req, res) => {
+  gamesServices.resetTestGame();
+  res.status(201).send({ message: 'Test game reset to default' });
+});
 gamesRouter.post('/test/tester_ready', (_req, res) => {
   const testGame = gamesServices.findGame('test') as Game;
   const testPlayer = testGame.players.find((p) => p.id === 'tester') as Player;

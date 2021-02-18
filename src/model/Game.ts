@@ -9,10 +9,10 @@ export class Game {
 
   ownerID: string;
 
-  constructor(player: Player) {
-    this.players = [player];
+  constructor() {
+    this.players = [];
     this.gameID = uuidv4();
-    this.ownerID = player.id;
+    this.ownerID = '';
   }
 
   setOwner(player: Player): void {

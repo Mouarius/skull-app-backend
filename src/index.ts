@@ -6,7 +6,6 @@ import { Server, Socket } from 'socket.io';
 //* UTILS & CONFIG
 import cors from 'cors';
 import config from './util/config';
-console.log('config.PORT', config.PORT);
 //* MODELS, ROUTES, SERVICES
 import gamesRouter from './routes/games';
 

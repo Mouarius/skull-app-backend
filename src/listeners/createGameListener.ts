@@ -6,6 +6,10 @@ import logger from '../util/logger';
 export default (_io: Server, socket: Socket): void => {
   socket.on('login/create_game/request', (player: Player) => {
     const newGame = gamesServices.addGame(player);
+    console.log(
+      '🚀 ~ file: createGameListener.ts ~ line 9 ~ socket.on ~ newGame',
+      newGame
+    );
     const roomName = newGame.gameID;
     void socket.join(roomName);
 
