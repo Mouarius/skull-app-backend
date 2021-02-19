@@ -2,11 +2,13 @@ import Game from '../model/Game';
 import _ from 'lodash';
 import Player from '../model/Player';
 import { TeamColor } from '../util/types';
+import logger from '../util/logger';
 
-const gamesList: Game[] = [];
+let gamesList: Game[] = [];
 console.log(process.env.NODE_ENV);
 
 const createTestGame = (numberTestPlayers: number): Game => {
+  console.log('Test game is creating...');
   const testGame = new Game();
   testGame.gameID = 'test';
 
@@ -22,8 +24,9 @@ const createTestGame = (numberTestPlayers: number): Game => {
 };
 
 if (process.env.NODE_ENV === 'DEVELOPMENT') {
-  gamesList.concat(createTestGame(4));
-  console.log('🚀 ~ file: gamesServices.ts ~ line 26 ~ gamesList', gamesList);
+  const testGame = createTestGame(4);
+  gamesList.push(testGame);
+  console.log('Test game created !');
 }
 
 const getGames = (): Game[] => {
@@ -42,21 +45,25 @@ const findGame = (gameID: string): Game | undefined => {
 };
 
 /**
- * Returns an updated version of the gamesList given in parameters
+ * Updates a the given game in the gameList
  * @param {Array} gamesList the array of the actual state of the games database
  * @param {Game} gameToUpdate the game object to update
  */
 
-const updateGame = (gameToUpdate: Game): Game[] => {
-  gamesList.map((game) =>
+const updateGame = (gameToUpdate: Game): void => {
+  gamesList = gamesList.map((game) =>
     game.gameID === gameToUpdate.gameID ? gameToUpdate : game
   );
-  return gamesList;
 };
 
-const resetTestGame = (): Game[] => {
-  return gamesList.map((game) =>
+const resetTestGame = (): void => {
+  logger.info('Resetting the test game');
+  gamesList = gamesList.map((game) =>
     game.gameID === 'test' ? createTestGame(4) : game
+  );
+  console.log(
+    '🚀 ~ file: gamesServices.ts ~ line 64 ~ resetTestGame ~ gamesList',
+    gamesList
   );
 };
 

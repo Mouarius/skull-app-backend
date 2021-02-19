@@ -1,36 +1,49 @@
 import { Socket, Server } from 'socket.io';
-import Player from '../model/Player';
 import gamesServices from '../services/gamesServices';
+import { toPlayer } from '../services/playerServices';
+import logger from '../util/logger';
 
 interface JoinGamePayload {
-  player: Player;
+  playerObject: any;
   gameID: string;
 }
 
 export default (io: Server, socket: Socket): void => {
   socket.on(
     'login/join_game/request',
-    ({ player, gameID }: JoinGamePayload) => {
-      const gameInList = gamesServices.findGame(gameID);
-      if (gameInList) {
-        //** Add the test endpoint */
-        if (gameInList.gameID === 'test') {
-          gameInList.setOwner(player);
-        }
+    ({ playerObject, gameID }: JoinGamePayload) => {
+      try {
         console.log(
-          `JOIN GAME : The player ${player.username} has joined the game ${gameInList.gameID}`
+          '🚀 ~ file: joinGameListener.ts ~ line 15 ~ playerObject',
+          playerObject
         );
 
-        gameInList.addPlayer(player);
-        gamesServices.updateGame(gameInList);
+        const player = toPlayer(playerObject); // Convert to Player type
+        const gameInList = gamesServices.findGame(gameID);
 
-        const roomName = gameInList.gameID;
+        if (gameInList) {
+          //** Add the test endpoint */
+          if (gameID === 'test') {
+            logger.info('Entering the test game');
+            gamesServices.resetTestGame();
+            gameInList.setOwner(player);
+          }
+          logger.info(
+            `The player ${player.username} has joined the game with ID : ${gameID}`
+          );
 
-        void socket.join(roomName);
+          gameInList.addPlayer(player);
+          gamesServices.updateGame(gameInList);
+          const roomName = gameInList.gameID;
+          void socket.join(roomName);
 
-        socket.to(roomName).emit('lobby/player_joined', player);
+          socket.to(roomName).emit('lobby/player_joined', player);
+        }
+        io.emit('login/join_game/response', gameInList);
+        console.log(gamesServices.getGames());
+      } catch (e) {
+        console.log(e);
       }
-      io.emit('login/join_game/response', gameInList);
     }
   );
 };
