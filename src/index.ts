@@ -15,6 +15,7 @@ import createGameListener from './listeners/createGameListener';
 import updateGameListener from './listeners/updateGameListener';
 import changeColorListener from './listeners/changeColorListener';
 import playerReadyListener from './listeners/playerReadyListener';
+import fetchGameListener from './listeners/fetchGameListener';
 
 // Initialize server
 const app = express();
@@ -32,6 +33,7 @@ app.use(cors());
 app.use('/api/games', gamesRouter);
 
 io.on('connection', (socket: Socket) => {
+  fetchGameListener(io, socket);
   joinGameListener(io, socket);
   createGameListener(io, socket);
   updateGameListener(io, socket);

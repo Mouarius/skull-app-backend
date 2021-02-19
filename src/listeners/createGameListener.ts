@@ -8,10 +8,6 @@ export default (_io: Server, socket: Socket): void => {
     try {
       const player = toPlayer(playerObject);
       const newGame = gamesServices.addGame(player);
-      console.log(
-        '🚀 ~ file: createGameListener.ts ~ line 9 ~ socket.on ~ newGame',
-        newGame
-      );
       const roomName = newGame.gameID;
       void socket.join(roomName);
 
