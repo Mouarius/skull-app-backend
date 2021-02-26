@@ -13,11 +13,6 @@ export default (io: Server, socket: Socket): void => {
     'login/join_game/request',
     ({ playerObject, gameID }: JoinGamePayload) => {
       try {
-        console.log(
-          '🚀 ~ file: joinGameListener.ts ~ line 15 ~ playerObject',
-          playerObject
-        );
-
         const player = toPlayer(playerObject); // Convert to Player type
         const gameInList = gamesServices.findGame(gameID);
 
@@ -27,6 +22,10 @@ export default (io: Server, socket: Socket): void => {
             logger.info('Entering the test game');
             gamesServices.resetTestGame();
             gameInList.setOwner(player);
+            console.log(
+              '🚀 ~ file: joinGameListener.ts ~ line 25 ~ gameInList',
+              gameInList
+            );
           }
           logger.info(
             `The player ${player.username} has joined the game with ID : ${gameID}`
@@ -40,7 +39,6 @@ export default (io: Server, socket: Socket): void => {
           socket.to(roomName).emit('lobby/player_joined', player);
         }
         io.emit('login/join_game/response', gameInList);
-        console.log(gamesServices.getGames());
       } catch (e) {
         console.log(e);
       }
