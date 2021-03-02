@@ -14,18 +14,22 @@ export default (io: Server, socket: Socket): void => {
     ({ playerObject, gameID }: JoinGamePayload) => {
       try {
         const player = toPlayer(playerObject); // Convert to Player type
-        const gameInList = gamesServices.findGame(gameID);
+        let gameInList = gamesServices.findGame(gameID);
 
         if (gameInList) {
+          logger.info(
+            `The player ${player.username} wants to join the game with ID : ${gameID}`
+          );
+
           //** Add the test endpoint */
           if (gameID === 'test') {
             logger.info('Entering the test game');
             gamesServices.resetTestGame();
+            const testGame = gamesServices.findGame('test');
+            if (testGame) {
+              gameInList = testGame;
+            }
             gameInList.setOwner(player);
-            console.log(
-              '🚀 ~ file: joinGameListener.ts ~ line 25 ~ gameInList',
-              gameInList
-            );
           }
           logger.info(
             `The player ${player.username} has joined the game with ID : ${gameID}`

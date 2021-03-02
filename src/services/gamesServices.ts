@@ -61,10 +61,6 @@ const resetTestGame = (): void => {
   gamesList = gamesList.map((game) =>
     game.gameID === 'test' ? createTestGame(4) : game
   );
-  console.log(
-    '🚀 ~ file: gamesServices.ts ~ line 64 ~ resetTestGame ~ gamesList',
-    gamesList
-  );
 };
 
 const addGame = (owner: Player): Game => {

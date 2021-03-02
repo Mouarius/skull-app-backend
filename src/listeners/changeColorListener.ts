@@ -17,10 +17,6 @@ export default (io: Server, socket: Socket): void => {
       const player = toPlayer(payload.playerObject);
       const { roomName } = helper.extractRoomsSet(socket.rooms);
       const game = gamesServices.findGame(roomName);
-      console.log(
-        '🚀 ~ file: changeColorListener.ts ~ line 20 ~ socket.on ~ roomName',
-        roomName
-      );
       if (game) {
         player.color = payload.color;
         game.updatePlayer(player);

@@ -6,6 +6,7 @@ export default (io: Server, socket: Socket): void => {
   socket.on('lobby/start_game/request', (gameID: string) => {
     const game = gamesServices.findGame(gameID);
     //TODO : Generate the deck for all players
+    console.log(gameID);
     game?.players.forEach((p) => {
       if (p.color) {
         p.deck = new Deck(p.color);
