@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { TeamColor } from '../util/types';
+import Card from './Card';
 import Player from './Player';
 
 export class Game {
@@ -15,8 +16,21 @@ export class Game {
     this.ownerID = '';
   }
 
+  //!!! APPERENTLY NOT WORKING
+
   setOwner(player: Player): void {
     this.ownerID = player.id;
+  }
+
+  filterCardsInGame(): Game {
+    const updatedGame = { ...this } as Game;
+    updatedGame.players.forEach((p) => {
+      const filteredCards = p.deck?.cards?.filter((c) => c.isInGame) as Card[];
+      if (p.deck) {
+        p.deck.cards = filteredCards;
+      }
+    });
+    return updatedGame;
   }
 
   addPlayer(player: Player): void {

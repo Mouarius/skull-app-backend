@@ -2,7 +2,7 @@ import Card from './Card';
 import { CardType, TeamColor } from '../util/types';
 
 export default class Deck {
-  cards: Card[] | null;
+  cards: Card[];
   color: TeamColor;
 
   constructor(color: TeamColor) {
@@ -10,7 +10,7 @@ export default class Deck {
     if (Object.values(TeamColor).includes(color)) {
       this.cards = this.createDeck();
     } else {
-      this.cards = null;
+      this.cards = [];
     }
   }
 

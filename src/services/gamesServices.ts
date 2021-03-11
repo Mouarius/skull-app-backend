@@ -41,7 +41,8 @@ const getGames = (): Game[] => {
 
 const findGame = (gameID: string): Game | undefined => {
   const gameFound = _.find(gamesList, _.matchesProperty('gameID', gameID));
-  return gameFound;
+  //Return only the cards that are in game
+  return gameFound?.filterCardsInGame();
 };
 
 /**

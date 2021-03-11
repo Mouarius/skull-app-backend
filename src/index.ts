@@ -18,6 +18,8 @@ import playerReadyListener from './listeners/playerReadyListener';
 import fetchGameListener from './listeners/fetchGameListener';
 import startGameListener from './listeners/startGameListener';
 import setCardVisibleListener from './listeners/setCardVisibleListener';
+import playCardListener from './listeners/playCardListener';
+import getPlayersListener from './listeners/getPlayersListener';
 
 // Initialize server
 const app = express();
@@ -43,6 +45,8 @@ io.on('connection', (socket: Socket) => {
   playerReadyListener(io, socket);
   startGameListener(io, socket);
   setCardVisibleListener(io, socket);
+  playCardListener(io, socket);
+  getPlayersListener(io, socket);
 });
 
 httpServer.listen(config.PORT || 3001, () => {
