@@ -1,5 +1,5 @@
 import { Server, Socket } from 'socket.io';
-import Player from '../model/Player';
+import Player from '../interfaces/Player';
 import gamesServices from '../services/gamesServices';
 import helper from '../util/helper';
 

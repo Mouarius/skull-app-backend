@@ -3,7 +3,7 @@ import { Socket, Server } from 'socket.io';
 import { TeamColor } from '../util/types';
 import helper from '../util/helper';
 import gamesServices from '../services/gamesServices';
-import { toPlayer } from '../services/playerServices';
+import { toPlayer } from '../services/playersServices';
 
 interface ChangeColorPayload {
   playerObject: any;

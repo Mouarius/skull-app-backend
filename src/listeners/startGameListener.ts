@@ -1,5 +1,5 @@
 import { Server, Socket } from 'socket.io';
-import Deck from '../model/Deck';
+import Deck from '../interfaces/Deck';
 import gamesServices from '../services/gamesServices';
 
 export default (io: Server, socket: Socket): void => {

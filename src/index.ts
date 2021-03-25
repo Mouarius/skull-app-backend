@@ -5,21 +5,12 @@ import { Server, Socket } from 'socket.io';
 
 //* UTILS & CONFIG
 import cors from 'cors';
-import config from './util/config';
+import { PORT } from './util/config';
 //* MODELS, ROUTES, SERVICES
-import gamesRouter from './routes/games';
+import gamesRouter from './controllers/games';
 
 //* SOCKET LISTENERS
-import joinGameListener from './listeners/joinGameListener';
-import createGameListener from './listeners/createGameListener';
-import updateGameListener from './listeners/updateGameListener';
-import changeColorListener from './listeners/changeColorListener';
-import playerReadyListener from './listeners/playerReadyListener';
-import fetchGameListener from './listeners/fetchGameListener';
-import startGameListener from './listeners/startGameListener';
-import setCardVisibleListener from './listeners/setCardVisibleListener';
-import playCardListener from './listeners/playCardListener';
-import getPlayersListener from './listeners/getPlayersListener';
+import playersRouter from './controllers/players';
 
 // Initialize server
 const app = express();
@@ -31,13 +22,15 @@ const io = new Server(httpServer, {
   },
 });
 
+app.use(express.json());
 app.use(cors());
 app.use('/api/games', gamesRouter);
+app.use('/api/players', playersRouter);
 
 io.on('connection', (socket: Socket) => {
   console.log('A user has connected !');
   socket.emit('hello', { message: 'Hello !!!' });
-  fetchGameListener(io, socket);
+  /* fetchGameListener(io, socket);
   joinGameListener(io, socket);
   createGameListener(io, socket);
   updateGameListener(io, socket);
@@ -46,9 +39,9 @@ io.on('connection', (socket: Socket) => {
   startGameListener(io, socket);
   setCardVisibleListener(io, socket);
   playCardListener(io, socket);
-  getPlayersListener(io, socket);
+  getPlayersListener(io, socket); */
 });
 
-httpServer.listen(config.PORT || 3001, () => {
-  console.log(`Server is running on port ${config.PORT}`);
+httpServer.listen(PORT || 3001, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

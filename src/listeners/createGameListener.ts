@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import gamesServices from '../services/gamesServices';
-import { toPlayer } from '../services/playerServices';
+import { toPlayer } from '../services/playersServices';
 import logger from '../util/logger';
 
 export default (_io: Server, socket: Socket): void => {

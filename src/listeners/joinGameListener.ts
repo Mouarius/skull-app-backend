@@ -1,6 +1,6 @@
 import { Socket, Server } from 'socket.io';
 import gamesServices from '../services/gamesServices';
-import { toPlayer } from '../services/playerServices';
+import { toPlayer } from '../services/playersServices';
 import logger from '../util/logger';
 
 interface JoinGamePayload {
@@ -35,8 +35,8 @@ export default (io: Server, socket: Socket): void => {
             `The player ${player.username} has joined the game with ID : ${gameID}`
           );
 
-          gameInList.addPlayer(player);
-          gamesServices.updateGame(gameInList);
+          void gameInList.addPlayer(player);
+          void gamesServices.updateGame(gameInList);
           const roomName = gameInList.gameID;
           void socket.join(roomName);
 
