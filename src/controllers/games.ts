@@ -15,8 +15,10 @@ gamesRouter.get('/', (_req, res, next) => {
 gamesRouter.get('/:id', (req, res, next) => {
   if (req.params.id) {
     try {
-      const games = gamesServices.findGame(req.params.id);
-      res.status(200).json(games);
+      const game = gamesServices.findGame(req.params.id);
+      if (game) {
+        res.status(200).json(gamesServices.populate(game));
+      }
     } catch (e) {
       next(e);
     }
@@ -29,7 +31,7 @@ gamesRouter.post('/', (req: Request, res: Response, next) => {
     const owner = playersServices.findPlayer(owner_id);
     if (owner) {
       const newGame = gamesServices.addGame(owner_id);
-      res.status(201).json(newGame);
+      res.status(201).json(gamesServices.populate(newGame));
     }
   } catch (e) {
     next(e);
@@ -45,7 +47,7 @@ gamesRouter.post('/join/:id', (req: Request, res: Response, next) => {
         player.id,
         req.params.id
       );
-      res.status(200).json(updatedGame);
+      res.status(200).json(gamesServices.populate(updatedGame));
     }
   } catch (e) {
     next(e);

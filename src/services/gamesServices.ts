@@ -1,6 +1,7 @@
-import Game from '../interfaces/Game';
+import { Game, GamePopulated } from '../interfaces/Game';
 import gamesData from '../../data/games.json';
 import { nanoid } from 'nanoid';
+import playersServices from './playersServices';
 
 const games: Array<Game> = gamesData;
 
@@ -28,6 +29,18 @@ const games: Array<Game> = gamesData;
 
 const getAllGames = (): Game[] => {
   return games;
+};
+
+const populate = (game: Game): GamePopulated => {
+  const populatedGame: GamePopulated = {
+    id: game.id,
+    owner_id: game.owner_id,
+    players: [],
+  };
+  game.players_id.forEach((pid) => {
+    populatedGame.players.push(playersServices.findPlayer(pid));
+  });
+  return populatedGame;
 };
 
 const findGame = (gameID: string): Game | null => {
@@ -92,4 +105,6 @@ export default {
   findGame,
   addGame,
   addPlayerToGame,
+  populate,
+  findGameWithPlayer,
 };
