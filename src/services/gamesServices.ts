@@ -1,4 +1,4 @@
-import Game from '../interfaces/game';
+import Game from '../interfaces/Game';
 import gamesData from '../../data/games.json';
 import { nanoid } from 'nanoid';
 
@@ -44,6 +44,34 @@ const addGame = (owner_id: string): Game => {
   return newGame;
 };
 
+const addPlayerToGame = (player_id: string, game_id: string): Game => {
+  // Check if the player isn't already in that game
+  const game = games.find((game) => game.id === game_id);
+  if (game) {
+    if (game.players_id.find((pid) => pid === player_id)) {
+      throw new Error(
+        `The player with id "${player_id}" is already in the game`
+      );
+    }
+    game.players_id.push(player_id);
+    return game;
+  }
+  throw new Error('There is no game found with the id : ' + game_id);
+};
+
+const findGameWithPlayer = (
+  game_id: string,
+  player_id: string
+): Game | null => {
+  for (let i = 0; i < games.length; i++) {
+    const game = games[i];
+    if (game.players_id.find((id) => id === player_id)) {
+      return game;
+    }
+  }
+  return null;
+};
+
 /* const resetTestGame = (): void => {
   logger.info('Resetting the test game');
   gamesList = gamesList.map((game) =>
@@ -63,4 +91,5 @@ export default {
   getAllGames,
   findGame,
   addGame,
+  addPlayerToGame,
 };
