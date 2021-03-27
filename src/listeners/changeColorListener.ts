@@ -1,30 +1,26 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Socket, Server } from 'socket.io';
-import { TeamColor } from '../util/types';
-import helper from '../util/helper';
+import { Server, Socket } from 'socket.io';
+import gameUpdateEvent from '../events/gameUpdateEvent';
 import gamesServices from '../services/gamesServices';
-import { toPlayer } from '../services/playersServices';
-
-interface ChangeColorPayload {
-  playerObject: any;
-  color: TeamColor;
-}
+import playersServices from '../services/playersServices';
+import { TeamColor } from '../util/types';
 
 export default (io: Server, socket: Socket): void => {
-  socket.on('lobby/change_color/request', (payload: ChangeColorPayload) => {
+  socket.on('CHANGE_COLOR', (player_id: string, color: TeamColor) => {
     // TODO : Add error handling if there is a problem and must check if color is taken or not
     try {
-      const player = toPlayer(payload.playerObject);
-      const { roomName } = helper.extractRoomsSet(socket.rooms);
-      const game = gamesServices.findGame(roomName);
-      if (game) {
-        player.color = payload.color;
-        game.updatePlayer(player);
+      const player = playersServices.findPlayer(player_id);
+      if (player) {
+        if (player.game_id) {
+          player.color = color;
+          const game = gamesServices.findGame(player.game_id);
+          if (game) {
+            gameUpdateEvent(io, socket, game);
+          }
+        }
       }
-      socket.emit('lobby/change_color/response', player);
-      io.emit('lobby/player_color_update', player);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   });
 };

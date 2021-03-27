@@ -1,0 +1,33 @@
+{
+  "testGame": {
+    "id": "test",
+    "owner_id": "tester",
+    "players_id": ["tester", "testPlayer1", "testPlayer2", "testPlayer3"]
+  },
+  "testPlayers": [
+    {
+      "username": "mouarius_test",
+      "id": "tester",
+      "isReady": false,
+      "game_id": "test"
+    },
+    {
+      "username": "Machin Testeur",
+      "id": "testPlayer1",
+      "isReady": true,
+      "game_id": "test"
+    },
+    {
+      "username": "Bidule Testeur",
+      "id": "testPlayer2",
+      "isReady": true,
+      "game_id": "test"
+    },
+    {
+      "username": "Truc Testeur",
+      "id": "testPlayer3",
+      "isReady": true,
+      "game_id": "test"
+    }
+  ]
+}

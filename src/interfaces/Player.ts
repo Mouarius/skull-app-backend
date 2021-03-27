@@ -8,6 +8,7 @@ export interface INewPlayer {
 interface Player {
   id: string;
   username: string;
+  socket?: string;
   color?: TeamColor;
   deck?: Card[];
   isReady?: boolean;
@@ -15,5 +16,7 @@ interface Player {
   roundsWon?: 0 | 1 | 2;
   game_id?: string;
 }
+
+export type PlayerUnsensitive = Omit<Player, 'socket'>;
 
 export default Player;

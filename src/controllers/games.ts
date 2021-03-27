@@ -47,6 +47,7 @@ gamesRouter.post('/join/:id', (req: Request, res: Response, next) => {
         player.id,
         req.params.id
       );
+
       res.status(200).json(gamesServices.populate(updatedGame));
     }
   } catch (e) {

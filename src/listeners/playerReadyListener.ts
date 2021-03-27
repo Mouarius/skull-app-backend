@@ -1,16 +1,17 @@
 import { Server, Socket } from 'socket.io';
-import Player from '../interfaces/Player';
+import gameUpdateEvent from '../events/gameUpdateEvent';
 import gamesServices from '../services/gamesServices';
-import helper from '../util/helper';
+import playersServices from '../services/playersServices';
 
 export default (io: Server, socket: Socket): void => {
-  socket.on('lobby/player_ready', (player: Player) => {
-    const { roomName } = helper.extractRoomsSet(socket.rooms);
-    const game = gamesServices.findGame(roomName);
-    if (game) {
-      player.isReady = !player.isReady;
-      game.updatePlayer(player);
+  socket.on('PLAYER_READY', (player_id: string) => {
+    const player = playersServices.findPlayer(player_id);
+    if (player && player.game_id) {
+      const game = gamesServices.findGame(player.game_id);
+      if (game) {
+        player.isReady = !player.isReady;
+        gameUpdateEvent(io, socket, game);
+      }
     }
-    io.emit('lobby/player_ready', player);
   });
 };
