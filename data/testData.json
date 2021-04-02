@@ -8,26 +8,30 @@
     {
       "username": "mouarius_test",
       "id": "tester",
-      "isReady": false,
-      "game_id": "test"
+      "isReady": true,
+      "game_id": "test",
+      "color": "green"
     },
     {
       "username": "Machin Testeur",
       "id": "testPlayer1",
       "isReady": true,
-      "game_id": "test"
+      "game_id": "test",
+      "color": "black"
     },
     {
       "username": "Bidule Testeur",
       "id": "testPlayer2",
       "isReady": true,
-      "game_id": "test"
+      "game_id": "test",
+      "color": "blue"
     },
     {
       "username": "Truc Testeur",
       "id": "testPlayer3",
       "isReady": true,
-      "game_id": "test"
+      "game_id": "test",
+      "color": "purple"
     }
   ]
 }

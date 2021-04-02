@@ -48,6 +48,7 @@ const findPlayer = (id: string): Player => {
 };
 const findPlayerWithSocket = (socket_id: string): Player => {
   const player = players.find((p) => p.socket === socket_id);
+  console.dir(players);
   if (!player) {
     throw new Error(
       'Unable to find a player with that socket_id : ' + socket_id
